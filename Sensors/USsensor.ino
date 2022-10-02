@@ -5,7 +5,8 @@
 void setup() {
   Serial.begin(9600); 
   pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT_PULLUP);
+  pinMode(echoPin, INPUT);
+
 }
 
 float duration,distance;
@@ -36,6 +37,7 @@ float speed=172.43;//  in m/s
 
   if(distance<=15){
   analogWrite(trigPin,0);
+  
   digitalWrite(led,HIGH);
   }
   else if(distance>15 && distance<40){
