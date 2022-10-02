@@ -1,13 +1,15 @@
 #define trigPin 11
 #define echoPin 2
+#define led 13
 
 void setup() {
   Serial.begin(9600); 
   pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+  pinMode(echoPin, INPUT_PULLUP);
 }
 
 float duration,distance;
+
 
 void loop() {
 
@@ -30,17 +32,21 @@ float speed=172.43;//  in m/s
   Serial.print(duration);
   Serial.println(" us");
   delay(500);
-  
-//LED control
-  if(distance<=15)
-  analogWrite(trigPin,255);
 
+
+  if(distance<=15){
+  analogWrite(trigPin,0);
+  digitalWrite(led,HIGH);
+  }
   else if(distance>15 && distance<40){
       float x;
-      x=(-102.*distance+4080)/100;
+      
+      x=(float)7.2857*distance-109.2857;
       analogWrite(trigPin,x);
+        digitalWrite(led,LOW);
     }
-  else
-  analogWrite(trigPin, 0);
-  
-} 
+  else{
+  analogWrite(trigPin, 255);
+  digitalWrite(led,HIGH);
+  }
+}
