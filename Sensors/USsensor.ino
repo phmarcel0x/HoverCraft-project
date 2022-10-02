@@ -1,10 +1,11 @@
-#define trigPin 11
-#define echoPin 2
-#define led 13
+#define D3_led 11
+#define trigPin 13
+#define echoPin 3
+//#define led 13
 
 void setup() {
   Serial.begin(9600); 
-  pinMode(trigPin, OUTPUT);
+  pinMode(D3_led, OUTPUT);
   pinMode(echoPin, INPUT);
 
 }
@@ -23,7 +24,7 @@ void loop() {
   digitalWrite(trigPin, LOW);
 //calculate the time for the complete cycle
   duration = pulseIn(echoPin, HIGH);
-//sound speed might change due to temperature and other factors
+//sound speed
 float speed=343;//  in m/s
 // calculate the distance
   distance=((speed*duration)/10000)/2;
@@ -32,19 +33,18 @@ float speed=343;//  in m/s
 
 
   if(distance>=0 && distance<=15){
-  analogWrite(trigPin,0);
-  //delay(1000);  
-  digitalWrite(led,HIGH);
+  analogWrite(D3_led,0);
+  digitalWrite(trigPin,HIGH);
   }
   else if(distance>15 && distance<40){
       
       x=(float)7.2857*distance-109.2857;
-      analogWrite(trigPin,x);
-        digitalWrite(led,LOW);
+      analogWrite(D3_led,x);
+        digitalWrite(trigPin,LOW);
     }
   else{
-  analogWrite(trigPin, 255);
-  digitalWrite(led,HIGH);
+  analogWrite(D3_led, 255);
+  digitalWrite(trigPin,HIGH);
   }
 
   Serial.print(distance);
