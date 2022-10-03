@@ -1,39 +1,41 @@
-//Parameters
-const int gp2y0a21Pin  = A0;
-
-//Variables
-int gp2y0a21Val  = 0;
 
 void setup() {
-  //Init Serial USB
+
   Serial.begin(9600);
-  Serial.println("Initialize System");
-  //Init ditance ir
-  pinMode(gp2y0a21Pin, INPUT);
+  pinMode(A1, INPUT);
 }
+
+float adcVal  = 0;
 
 void loop() {
-  testGP2Y0A21();
-}
-
-void testGP2Y0A21( ) { /* function testGP2Y0A21 */
-  ////Read distance sensor
-  gp2y0a21Val = analogRead(gp2y0a21Pin);
-  Serial.print(gp2y0a21Val); Serial.print(" - "); Serial.println(distRawToPhys(gp2y0a21Val));
-  if (gp2y0a21Val < 200) {
-    delay(1000);
-    Serial.println("Obstacle detected");
-  } else {
-    delay(1000);
-    Serial.println("No obstacle");
+  
+  adcVal = analogRead(A1);
+  
+    float Vout = float(adcVal) * 0.0048828125; // Conversion analog to voltage
+  float distance = 29.988 * pow(Vout, -1.173);
+  
+  
+  if(distance>=0 && distance<=15){
+  analogWrite(D3_led,0);
+  digitalWrite(trigPin,HIGH);
+  }
+  else if(distance>15 && distance<40){
+      
+      x=(float)7.2857*distance-109.2857;
+      analogWrite(D3_led,x);
+        digitalWrite(trigPin,LOW);
+    }
+  else{
+  analogWrite(D3_led, 255);
+  digitalWrite(trigPin,HIGH);
   }
 
-}
+ Serial.print("ADC: ");
+ Serial.println(adcVal);
+ 
+ Serial.print(distance);
+ Serial.println(" cm");
+ delay(1000);
+ 
 
-int distRawToPhys(int raw) { /* function distRawToPhys */
-  ////IR Distance sensor conversion rule
-  float Vout = float(raw) * 0.0048828125; // Conversion analog to voltage
-  int phys = 13 * pow(Vout, -1); // Conversion volt to distance
-
-  return phys;
 }
