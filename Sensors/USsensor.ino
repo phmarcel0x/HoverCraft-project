@@ -6,6 +6,7 @@
 void setup() {
   Serial.begin(9600); 
   pinMode(D3_led, OUTPUT);
+  pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
 
 }
@@ -49,5 +50,7 @@ float speed=343;//  in m/s
 
   Serial.print(distance);
   Serial.println(" cm");
+  Serial.println(analogRead(trigPin));
+  
   delay(1000);
 }
