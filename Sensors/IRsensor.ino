@@ -1,17 +1,20 @@
+#define D3_led 11
+#define trigPin 13
 
 void setup() {
 
   Serial.begin(9600);
   pinMode(A1, INPUT);
+  analogReference(DEFAULT);
 }
 
-float adcVal  = 0;
+float adcVal,x;
 
 void loop() {
   
   adcVal = analogRead(A1);
   
-    float Vout = float(adcVal) * 0.0048828125; // Conversion analog to voltage
+  float Vout = float(adcVal) * 0.0048828125;
   float distance = 29.988 * pow(Vout, -1.173);
   
   
