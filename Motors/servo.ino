@@ -17,12 +17,11 @@ Servo myservo;
 float x;
 
  void setup() {
+
    Serial.begin(9600);
    Wire.begin();
-
-  myservo.attach(9); 
-
- byte status = mpu.begin();
+   myservo.attach(9);
+   byte status = mpu.begin();
    Serial.print(F("MPU6050 status: "));
    Serial.println(status);
    while (status != 0) { } // stop everything if could not connect to MPU6050
@@ -30,7 +29,12 @@ float x;
    delay(1000);
    mpu.calcOffsets(); // gyro and accelero
    Serial.println("Done!\n");
+    //0->+-250, 1->+-500, 2->+-1000, 3->+-2000
+    mpu.setGyroConfig(0);
+    //0->+-2g, 1->+-4g, 2->+-8g, 3->+-16g
+    mpu.setAccConfig(0);
  }
+ 
  void loop() {
    mpu.update();
  if ((millis() - timer) > 10) { // print data every 10ms
@@ -57,6 +61,8 @@ float x;
   else{digitalWrite(LED, LOW);
   } 
 
+
+
   if(  abs(mpu.getAccX()) < 0.01) {
     analogWrite(D3, 255);
   } else if( abs(mpu.getAccX()) > 1) {
@@ -67,6 +73,8 @@ float x;
   } else if(mpu.getAccX()>=0.01 && mpu.getAccX()<=1) {
     x=-257.57*mpu.getAccX()+257.57;
     analogWrite(D3,x);    
+
+  
   }
   
 }
